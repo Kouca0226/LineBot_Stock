@@ -94,6 +94,17 @@ def handle_message(event):
         )
     )
         line_bot_api.reply_message(event.reply_token, buttons_template_message)
+    elif '大戶籌碼 ' in message:
+        flex_message = TextSendMessage(text="請選擇要顯示的買賣超資訊",
+                                quick_reply=QuickReply(items=[
+                                QuickReplyButton(action=MessageAction(label="最新法人", text="最新法人買賣超 " + message[5:])),
+                                QuickReplyButton(action=MessageAction(label="歷年法人", text="歷年法人買賣超 " + message[5:])),
+                                QuickReplyButton(action=MessageAction(label="外資", text="外資買賣超 " + message[5:])),
+                                QuickReplyButton(action=MessageAction(label="投信", text="投信買賣超 " + message[5:])),
+                                QuickReplyButton(action=MessageAction(label="自營商", text="自營商買賣超 " + message[5:])),
+                                QuickReplyButton(action=MessageAction(label="三大法人", text="三大法人買賣超 " + message[5:]))
+                            ]))
+        line_bot_api.reply_message(event.reply_token, flex_message)
     else:
         line_bot_api.reply_message(event.reply_token, TextSendMessage(message))
 #主程式
