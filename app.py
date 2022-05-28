@@ -46,15 +46,14 @@ import re
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     message = event.message.text
-    if re.match("你是誰",message):
-        sticker_message = StickerSendMessage(
-        package_id='1070',
-        sticker_id='17878'
+    if re.match("你要去哪裡",message):
+        location_message = LocationSendMessage(
+            title= "高雄市壽山動物園",
+            address= "高雄市鼓山區萬壽路350號",
+            latitude= 22.636113729166258,
+            longitude= 120.27545572162684
     )
-        line_bot_api.reply_message(event.reply_token, sticker_message)
-    else:
-        line_bot_api.reply_message(event.reply_token,TextSendMessage(message))
-
+line_bot_api.reply_message(event.reply_token, location_message)
 #主程式
 import os 
 if __name__ == "__main__":
