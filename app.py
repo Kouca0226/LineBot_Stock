@@ -51,7 +51,10 @@ def handle_message(event):
         package_id='1070',
         sticker_id='17878'
     )
-line_bot_api.reply_message(event.reply_token, sticker_message)
+        line_bot_api.reply_message(event.reply_token, sticker_message)
+    else:
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(message))
+
 #主程式
 import os 
 if __name__ == "__main__":
