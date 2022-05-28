@@ -52,7 +52,7 @@ def handle_message(event):
             address= "高雄市鼓山區萬壽路350號",
             latitude= 22.636113729166258,
             longitude= 120.27545572162684
-    )
+        )
 line_bot_api.reply_message(event.reply_token, location_message)
 #主程式
 import os 
