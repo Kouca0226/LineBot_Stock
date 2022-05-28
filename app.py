@@ -52,7 +52,7 @@ def handle_message(event):
         template=CarouselTemplate(
             columns=[
                 CarouselColumn(
-                    thumbnail_image_url ="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.businesstoday.com.tw%2Farticle%2Fcategory%2F80402%2Fpost%2F201903070027%2F&psig=AOvVaw2hAu8vUyuViCXrbJiy3jMo&ust=1653827300633000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCLi_5_qYgvgCFQAAAAAdAAAAABAD",
+                    #thumbnail_image_url ="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.businesstoday.com.tw%2Farticle%2Fcategory%2F80402%2Fpost%2F201903070027%2F&psig=AOvVaw2hAu8vUyuViCXrbJiy3jMo&ust=1653827300633000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCLi_5_qYgvgCFQAAAAAdAAAAABAD",
                     title = message + " 股票資訊",
                     text ="請點選想查詢的股票資訊",
                     actions =[
@@ -65,7 +65,7 @@ def handle_message(event):
                     ]
                 ),
                 CarouselColumn(
-                    thumbnail_image_url ="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.businesstoday.com.tw%2Farticle%2Fcategory%2F80402%2Fpost%2F201903070027%2F&psig=AOvVaw2hAu8vUyuViCXrbJiy3jMo&ust=1653827300633000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCLi_5_qYgvgCFQAAAAAdAAAAABAD",
+                    #thumbnail_image_url ="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.businesstoday.com.tw%2Farticle%2Fcategory%2F80402%2Fpost%2F201903070027%2F&psig=AOvVaw2hAu8vUyuViCXrbJiy3jMo&ust=1653827300633000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCLi_5_qYgvgCFQAAAAAdAAAAABAD",
                     title = message[3:] + " 股票資訊",
                     text ="請點選想查詢的股票資訊",
                     actions =[
@@ -78,7 +78,7 @@ def handle_message(event):
                     ]
                 ),
                 CarouselColumn(
-                    thumbnail_image_url ="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.businesstoday.com.tw%2Farticle%2Fcategory%2F80402%2Fpost%2F201903070027%2F&psig=AOvVaw2hAu8vUyuViCXrbJiy3jMo&ust=1653827300633000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCLi_5_qYgvgCFQAAAAAdAAAAABAD",
+                    #thumbnail_image_url ="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.businesstoday.com.tw%2Farticle%2Fcategory%2F80402%2Fpost%2F201903070027%2F&psig=AOvVaw2hAu8vUyuViCXrbJiy3jMo&ust=1653827300633000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCLi_5_qYgvgCFQAAAAAdAAAAABAD",
                     title = message[3:] + " 股利資訊",
                     text ="請點選想查詢的股票資訊",
                     actions =[
