@@ -35,20 +35,11 @@ def callback():
 import re
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    message = text = event.message.text
-    if '股票 ' in message:
-        flex_message = TextSendMessage(text="請選擇要顯示的買賣超資訊",
-                                quick_reply=QuickReply(items=[
-                                QuickReplyButton(action=MessageAction(label="最新法人", text="最新法人買賣超 " + message[5:])),
-                                QuickReplyButton(action=MessageAction(label="歷年法人", text="歷年法人買賣超 " + message[5:])),
-                                QuickReplyButton(action=MessageAction(label="外資", text="外資買賣超 " + message[5:])),
-                                QuickReplyButton(action=MessageAction(label="投信", text="投信買賣超 " + message[5:])),
-                                QuickReplyButton(action=MessageAction(label="自營商", text="自營商買賣超 " + message[5:])),
-                                QuickReplyButton(action=MessageAction(label="三大法人", text="三大法人買賣超 " + message[5:]))
-                            ]))
-        line_bot_api.reply_message(event.reply_token, flex_message)
+    message = text=event.message.text
+    if re.match('help',message):
+        line_bot_api.reply_message(event.reply_token,TextSendMessage('#＋股票代號：查詢股票基本資料'))
     else:
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(message))
+        line_bot_api.reply_message(event.reply_token, TextSendMessage("錯誤指令\n請輸入help查詢"))
 
 #主程式
 import os 
