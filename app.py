@@ -35,9 +35,65 @@ def callback():
 import re
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    message = text=event.message.text
-    if re.match('help',message):
-        line_bot_api.reply_message(event.reply_token,TextSendMessage('請在股票代碼前加上特定符號\n(ex.#2330)\n「#」:查詢股票基本資料'))
+    message = text = event.message.text
+    if "股票 " in message:
+        buttons_template_message = TemplateSendMessage(
+        alt_text = "股票資訊",
+        template=CarouselTemplate(
+            columns=[
+                CarouselColumn(
+                    title = message + " 股票資訊",
+                    text ="請點選想查詢的股票資訊",
+                    actions =[
+                        MessageAction(
+                            label= message[3:] + " 個股資訊",
+                            text= "個股資訊 " + message[3:]),
+                        MessageAction(
+                            label= message[3:] + " 個股新聞",
+                            text= "個股新聞 " + message[3:])
+                    ]
+                ),
+                CarouselColumn(
+                    title = message[3:] + " 股票資訊",
+                    text ="請點選想查詢的股票資訊",
+                    actions =[
+                        MessageAction(
+                            label= message[3:] + " 最新分鐘圖",
+                            text= "最新分鐘圖 " + message[3:]),
+                        MessageAction(
+                            label= message[3:] + " 日線圖",
+                            text= "日線圖 " + message[3:]),
+                    ]
+                ),
+                CarouselColumn(
+                    title = message[3:] + " 股利資訊",
+                    text ="請點選想查詢的股票資訊",
+                    actions =[
+                        MessageAction(
+                            label= message[3:] + " 平均股利",
+                            text= "平均股利 " + message[3:]),
+                        MessageAction(
+                            label= message[3:] + " 歷年股利",
+                            text= "歷年股利 " + message[3:])
+                    ]
+                ),
+            ]
+        )
+    )
+        line_bot_api.reply_message(event.reply_token, buttons_template_message)
+    elif '大戶籌碼 ' in message:
+        flex_message = TextSendMessage(text="請選擇要顯示的買賣超資訊",
+                                quick_reply=QuickReply(items=[
+                                QuickReplyButton(action=MessageAction(label="最新法人", text="最新法人買賣超 " + message[5:])),
+                                QuickReplyButton(action=MessageAction(label="歷年法人", text="歷年法人買賣超 " + message[5:])),
+                                QuickReplyButton(action=MessageAction(label="外資", text="外資買賣超 " + message[5:])),
+                                QuickReplyButton(action=MessageAction(label="投信", text="投信買賣超 " + message[5:])),
+                                QuickReplyButton(action=MessageAction(label="自營商", text="自營商買賣超 " + message[5:])),
+                                QuickReplyButton(action=MessageAction(label="三大法人", text="三大法人買賣超 " + message[5:]))
+                            ]))
+        line_bot_api.reply_message(event.reply_token, flex_message)
+    if re.match('個股資訊',message):
+        line_bot_api.reply_message(event.reply_token,TextSendMessage('123'))
     else:
         line_bot_api.reply_message(event.reply_token, TextSendMessage("錯誤指令\n請輸入「help」查詢"))
 
