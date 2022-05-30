@@ -37,7 +37,7 @@ import re
 def handle_message(event):
     message = text=event.message.text
     if re.match('help',message):
-        line_bot_api.reply_message(event.reply_token,TextSendMessage('請在股票代碼錢加上特定符號\n「」股票代號\n「#」:查詢股票基本資料'))
+        line_bot_api.reply_message(event.reply_token,TextSendMessage('請在股票代碼前加上特定符號\n(ex.#2330)\n「#」:查詢股票基本資料'))
     else:
         line_bot_api.reply_message(event.reply_token, TextSendMessage("錯誤指令\n請輸入「help」查詢"))
 
