@@ -10,7 +10,6 @@ from linebot.models import *
 
 app = Flask(__name__)
 
-
 line_bot_api = LineBotApi('rBdXfRQqtY6avy9CJ3Ttenas9mkSoBGquP/qISdSUDfaDIndkKWlDRe4uvz2T5PKJ3f9EbfilzJB7n6Mn5oF//xZtBF5KQEhOdFFuUlgaqJ8LZ1McPOuCzrB9hOZuqLeT0cF+5zd1ZdnH+2gUuXsrgdB04t89/1O/w1cDnyilFU=')
 handler = WebhookHandler('f40eb4fe030cdece35f592631b9e184a')
 line_bot_api.push_message('U82a41664b4a103c31ae2be046358f484', TextSendMessage(text='你可以開始了'))
@@ -48,7 +47,7 @@ def handle_message(event):
                     actions =[
                         MessageAction(
                             label= message[3:] + " 個股資訊",
-                            text= "個股資訊 " + message[3:]),
+                            text= "個股資訊 " + message[3:] + "\n123"),
                         MessageAction(
                             label= message[3:] + " 個股新聞",
                             text= "個股新聞 " + message[3:])
