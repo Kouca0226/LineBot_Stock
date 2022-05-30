@@ -93,7 +93,7 @@ def handle_message(event):
                             ]))
         line_bot_api.reply_message(event.reply_token, flex_message)
     if re.match('個股資訊',message):
-        line_bot_api.reply_message(event.reply_token,TextSendMessage('123'))
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(message[5:]))
     else:
         line_bot_api.reply_message(event.reply_token, TextSendMessage("錯誤指令\n請輸入「help」查詢"))
 
