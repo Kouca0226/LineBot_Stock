@@ -36,52 +36,7 @@ import re
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     message = text = event.message.text
-    if "股票 " in message:
-        buttons_template_message = TemplateSendMessage(
-        alt_text = "股票資訊",
-        template=CarouselTemplate(
-            columns=[
-                CarouselColumn(
-                    title = message + " 股票資訊",
-                    text ="請點選想查詢的股票資訊",
-                    actions =[
-                        MessageAction(
-                            label= message[3:] + " 個股資訊",
-                            text= "個股資訊 " + message[3:] + "\n123"),
-                        MessageAction(
-                            label= message[3:] + " 個股新聞",
-                            text= "個股新聞 " + message[3:])
-                    ]
-                ),
-                CarouselColumn(
-                    title = message[3:] + " 股票資訊",
-                    text ="請點選想查詢的股票資訊",
-                    actions =[
-                        MessageAction(
-                            label= message[3:] + " 最新分鐘圖",
-                            text= "最新分鐘圖 " + message[3:]),
-                        MessageAction(
-                            label= message[3:] + " 日線圖",
-                            text= "日線圖 " + message[3:]),
-                    ]
-                ),
-                CarouselColumn(
-                    title = message[3:] + " 股利資訊",
-                    text ="請點選想查詢的股票資訊",
-                    actions =[
-                        MessageAction(
-                            label= message[3:] + " 平均股利",
-                            text= "平均股利 " + message[3:]),
-                        MessageAction(
-                            label= message[3:] + " 歷年股利",
-                            text= "歷年股利 " + message[3:])
-                    ]
-                ),
-            ]
-        )
-    )
-        line_bot_api.reply_message(event.reply_token, buttons_template_message)
-    elif '大戶籌碼 ' in message:
+    if '股票 ' in message:
         flex_message = TextSendMessage(text="請選擇要顯示的買賣超資訊",
                                 quick_reply=QuickReply(items=[
                                 QuickReplyButton(action=MessageAction(label="最新法人", text="最新法人買賣超 " + message[5:])),
@@ -94,6 +49,7 @@ def handle_message(event):
         line_bot_api.reply_message(event.reply_token, flex_message)
     else:
         line_bot_api.reply_message(event.reply_token, TextSendMessage(message))
+
 #主程式
 import os 
 if __name__ == "__main__":
