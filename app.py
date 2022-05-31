@@ -92,11 +92,39 @@ def handle_message(event):
                                 QuickReplyButton(action=MessageAction(label="三大法人", text="三大法人買賣超 " + message[5:]))
                             ]))
         line_bot_api.reply_message(event.reply_token, flex_message)
-    if re.match('個股資訊',message):
-        line_bot_api.reply_message(event.reply_token,TextSendMessage(message[5:]))
+    if re.match('#',message):
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(get_stock(message[1:0])))
     else:
         line_bot_api.reply_message(event.reply_token, TextSendMessage("錯誤指令\n請輸入「help」查詢"))
 
+def get_stock(stockn):
+    import requests
+    from bs4 import BeautifulSoup
+    url = "https://tw.stock.yahoo.com/quote/" + stockn
+    r = requests.get(url)
+    sp = BeautifulSoup(r.text, 'lxml')
+
+    # 找到區塊
+    title1 = sp.find('h1', class_='C($c-link-text) Fw(b) Fz(24px) Mend(8px)').text
+    title2 = sp.find('span', class_='C($c-icon) Fz(24px) Mend(20px)').text
+    title = ("%s(%s)" %(title1, title2))
+
+    data = sp.find('div', class_='D(f) Ai(fe) Mb(4px)')
+    if (str(data)[100] == 'u'):
+        trend = 'up'
+    else:
+        trend = 'down'
+    price1 = sp.find('span', class_='Fz(32px) Fw(b) Lh(1) Mend(16px) D(f) Ai(c) C($c-trend-'+ trend +')').text
+    price = ('即時股價：'+price1)
+    percent = sp.find('span', class_='Jc(fe) Fz(20px) Lh(1.2) Fw(b) D(f) Ai(c) C($c-trend-'+ trend +')').text
+    dprice = sp.find('span', class_='Fz(20px) Fw(b) Lh(1.2) Mend(4px) D(f) Ai(c) C($c-trend-'+ trend +')').text
+    if (trend == 'up'):
+        t = ("走勢：上漲%s %s" %(dprice ,percent))
+    else:
+        t = ("走勢：下跌%s %s" %(dprice ,percent))
+    
+    out = ("%s\n%s\n%s" %(title, price, t))
+    return (out)
 #主程式
 import os 
 if __name__ == "__main__":
