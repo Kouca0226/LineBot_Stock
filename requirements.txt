@@ -15,3 +15,4 @@ mpl_finance
 arrow
 beautifulsoup4
 requests
+pandas
