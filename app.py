@@ -85,6 +85,52 @@ def handle_message(event):
         )
     )
         line_bot_api.reply_message(event.reply_token, buttons_template_message)
+    elif "股票代碼 " in message:
+        message = get_stockname(message[5:0])
+        buttons_template_message = TemplateSendMessage(
+        alt_text = "股票資訊",
+        template=CarouselTemplate(
+            columns=[
+                CarouselColumn(
+                    title = message + " 股票資訊",
+                    text ="請點選想查詢的股票資訊",
+                    actions =[
+                        MessageAction(
+                            label= message[3:] + " 個股資訊",
+                            text= "個股資訊 " + message[3:]),
+                        MessageAction(
+                            label= message[3:] + " 個股新聞",
+                            text= "個股新聞 " + message[3:])
+                    ]
+                ),
+                CarouselColumn(
+                    title = message[3:] + " 股票資訊",
+                    text ="請點選想查詢的股票資訊",
+                    actions =[
+                        MessageAction(
+                            label= message[3:] + " 最新分鐘圖",
+                            text= "最新分鐘圖 " + message[3:]),
+                        MessageAction(
+                            label= message[3:] + " 日線圖",
+                            text= "日線圖 " + message[3:]),
+                    ]
+                ),
+                CarouselColumn(
+                    title = message[3:] + " 股利資訊",
+                    text ="請點選想查詢的股票資訊",
+                    actions =[
+                        MessageAction(
+                            label= message[3:] + " 平均股利",
+                            text= "平均股利 " + message[3:]),
+                        MessageAction(
+                            label= message[3:] + " 歷年股利",
+                            text= "歷年股利 " + message[3:])
+                    ]
+                ),
+            ]
+        )
+    )
+        line_bot_api.reply_message(event.reply_token, buttons_template_message)
     elif '大戶籌碼 ' in message:
         flex_message = TextSendMessage(text="請選擇要顯示的買賣超資訊",
                                 quick_reply=QuickReply(items=[
@@ -130,10 +176,6 @@ def get_stock(stockn):
     out = ("%s\n%s\n%s" %(title, price, t))
     return (out)
 
-import requests
-from bs4 import BeautifulSoup
-import pandas as pd
-
 def get_stockid(name):
     url = 'https://isin.twse.com.tw/isin/class_main.jsp?owncode=&stockname=&isincode=&market=1&issuetype=1&industry_code=&Page=1&chklike=Y'
     r = requests.get(url)
@@ -150,6 +192,23 @@ def get_stockid(name):
         f = 0
     if (f):
         return df[0][2][n]
+
+def get_stockname(id):
+    url = 'https://isin.twse.com.tw/isin/class_main.jsp?owncode=&stockname=&isincode=&market=1&issuetype=1&industry_code=&Page=1&chklike=Y'
+    r = requests.get(url)
+    df = pd.read_html(r.text)
+    n = 0
+    f = 1
+    for i in range(1,966):
+        if id in df[0][2][i]:
+           n = i
+           i+=1
+           break
+    else :
+        return "查無此股票"
+        f = 0
+    if (f):
+        return df[0][3][n]
 
 def stock(name):
     return get_stock(get_stockid(name))
