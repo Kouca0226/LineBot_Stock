@@ -8,6 +8,9 @@ from linebot.exceptions import (
 )
 from linebot.models import *
 
+import requests
+from bs4 import BeautifulSoup
+
 app = Flask(__name__)
 
 line_bot_api = LineBotApi('rBdXfRQqtY6avy9CJ3Ttenas9mkSoBGquP/qISdSUDfaDIndkKWlDRe4uvz2T5PKJ3f9EbfilzJB7n6Mn5oF//xZtBF5KQEhOdFFuUlgaqJ8LZ1McPOuCzrB9hOZuqLeT0cF+5zd1ZdnH+2gUuXsrgdB04t89/1O/w1cDnyilFU=')
@@ -92,14 +95,12 @@ def handle_message(event):
                                 QuickReplyButton(action=MessageAction(label="三大法人", text="三大法人買賣超 " + message[5:]))
                             ]))
         line_bot_api.reply_message(event.reply_token, flex_message)
-    if re.match('#',message):
-        line_bot_api.reply_message(event.reply_token,TextSendMessage(message[1:0]))
+    elif '# ' in message:
+        line_bot_api.reply_message(event.reply_token, message[1:])
     else:
         line_bot_api.reply_message(event.reply_token, TextSendMessage("錯誤指令\n請輸入「help」查詢"))
 
 def get_stock(stockn):
-    import requests
-    from bs4 import BeautifulSoup
     url = "https://tw.stock.yahoo.com/quote/" + stockn
     r = requests.get(url)
     sp = BeautifulSoup(r.text, 'lxml')
