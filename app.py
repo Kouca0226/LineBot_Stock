@@ -86,7 +86,7 @@ def handle_message(event):
     )
         line_bot_api.reply_message(event.reply_token, buttons_template_message)
     elif "股票代碼 " in message:
-        message = get_stockname(message[5:0])
+        message[5:0] = get_stockname(message[5:0])
         buttons_template_message = TemplateSendMessage(
         alt_text = "股票資訊",
         template=CarouselTemplate(
@@ -145,7 +145,7 @@ def handle_message(event):
     elif '#' in message:
         line_bot_api.reply_message(event.reply_token, TextSendMessage(get_stock(message[1:])))
     elif '個股資訊 ' in message:
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(stock(message[5:])))
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(get_stock(get_stockid(message[5:]))))
     else:
         line_bot_api.reply_message(event.reply_token, TextSendMessage("錯誤指令\n請輸入「help」查詢"))
 
@@ -189,9 +189,7 @@ def get_stockid(name):
            break
     else :
         return "查無此股票"
-        f = 0
-    if (f):
-        return df[0][2][n]
+    return df[0][2][n]
 
 def get_stockname(id):
     url = 'https://isin.twse.com.tw/isin/class_main.jsp?owncode=&stockname=&isincode=&market=1&issuetype=1&industry_code=&Page=1&chklike=Y'
@@ -206,13 +204,7 @@ def get_stockname(id):
            break
     else :
         return "查無此股票"
-        f = 0
-    if (f):
-        return df[0][3][n]
-
-def stock(name):
-    return get_stock(get_stockid(name))
-
+    return df[0][3][n]
 
 #主程式
 import os 
