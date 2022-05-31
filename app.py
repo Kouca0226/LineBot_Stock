@@ -95,8 +95,8 @@ def handle_message(event):
                                 QuickReplyButton(action=MessageAction(label="三大法人", text="三大法人買賣超 " + message[5:]))
                             ]))
         line_bot_api.reply_message(event.reply_token, flex_message)
-    elif '# ' in message:
-        line_bot_api.reply_message(event.reply_token, message[1:])
+    elif '個股資訊 ' in message:
+        line_bot_api.reply_message(event.reply_token, message)
     else:
         line_bot_api.reply_message(event.reply_token, TextSendMessage("錯誤指令\n請輸入「help」查詢"))
 
