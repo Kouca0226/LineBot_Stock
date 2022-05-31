@@ -10,6 +10,7 @@ from linebot.models import *
 
 import requests
 from bs4 import BeautifulSoup
+import pandas as pd
 
 app = Flask(__name__)
 
@@ -97,6 +98,8 @@ def handle_message(event):
         line_bot_api.reply_message(event.reply_token, flex_message)
     elif '#' in message:
         line_bot_api.reply_message(event.reply_token, TextSendMessage(get_stock(message[1:])))
+    elif '個股資訊 ' in message:
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(get_stock(message[5:])))
     else:
         line_bot_api.reply_message(event.reply_token, TextSendMessage("錯誤指令\n請輸入「help」查詢"))
 
@@ -126,6 +129,32 @@ def get_stock(stockn):
     
     out = ("%s\n%s\n%s" %(title, price, t))
     return (out)
+
+import requests
+from bs4 import BeautifulSoup
+import pandas as pd
+
+def get_stockid(name):
+    url = 'https://isin.twse.com.tw/isin/class_main.jsp?owncode=&stockname=&isincode=&market=1&issuetype=1&industry_code=&Page=1&chklike=Y'
+    r = requests.get(url)
+    df = pd.read_html(r.text)
+    n = 0
+    f = 1
+    for i in range(1,966):
+        if name in df[0][3][i]:
+           n = i
+           i+=1
+           break
+    else :
+        return "查無此股票"
+        f = 0
+    if (f):
+        return df[0][2][n]
+
+def stock(name):
+    return get_stock(get_stockid(name))
+
+
 #主程式
 import os 
 if __name__ == "__main__":
