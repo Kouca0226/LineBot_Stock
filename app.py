@@ -52,7 +52,7 @@ def handle_message(event):
                             ]))
         line_bot_api.reply_message(event.reply_token, flex_message)
     elif '及時股價 ' in message:
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(price(message[3:])))
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(price(message[5:])))
     else:
         line_bot_api.reply_message(event.reply_token, TextSendMessage("錯誤指令"))
 
