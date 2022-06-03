@@ -97,13 +97,17 @@ def get_stock(stockn):
     return (out)
 
 def get_stockid(name):
+    data = {"台積電":"2330"}
     url = 'https://isin.twse.com.tw/isin/single_main.jsp?owncode=&stockname=' + name
     r = requests.get(url)
+    if(name in data):
+        return data.get(name)
     try:
         df = pd.read_html(r.text)
         n = 0
         while(1):
             if(df[0][3][n] == name):
+                data.setdefault(name, df[0][2][n])
                 return df[0][2][n]
             else :
                 n += 1
