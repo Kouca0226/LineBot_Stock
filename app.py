@@ -96,7 +96,7 @@ def get_stockid(name):
         n = 0
         while(1):
             if (df[0][5][n] == "股票" or df[0][5][n] == "ETF"):
-                if (df[0][2][n]):
+                if (df[0][2][n] == name):
                     return df[0][2][n]
             else :
                 n += 1
