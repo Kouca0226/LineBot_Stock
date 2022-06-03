@@ -95,23 +95,8 @@ def get_stockid(name):
         df = pd.read_html(r.text)
         n = 0
         while(1):
-            if (df[0][5][n] == "股票" or df[0][5][n] == "ETF"):
-                if (df[0][2][n] == name):
-                    return df[0][2][n]
-            else :
-                n += 1
-    except:
-        return "查無此股票"
-
-def get_stockname(id):
-    url = 'https://isin.twse.com.tw/isin/single_main.jsp?owncode='+ id +'&stockname='
-    r = requests.get(url)
-    try:
-        df = pd.read_html(r.text)
-        n = 0
-        while(1):
-            if (df[0][5][n] == "股票" or df[0][5][n] == "ETF"):
-                return df[0][3][n]
+            if(df[0][3][n] == name):
+                return df[0][2][n]
             else :
                 n += 1
     except:
