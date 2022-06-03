@@ -16,7 +16,7 @@ app = Flask(__name__)
 
 line_bot_api = LineBotApi('rBdXfRQqtY6avy9CJ3Ttenas9mkSoBGquP/qISdSUDfaDIndkKWlDRe4uvz2T5PKJ3f9EbfilzJB7n6Mn5oF//xZtBF5KQEhOdFFuUlgaqJ8LZ1McPOuCzrB9hOZuqLeT0cF+5zd1ZdnH+2gUuXsrgdB04t89/1O/w1cDnyilFU=')
 handler = WebhookHandler('f40eb4fe030cdece35f592631b9e184a')
-line_bot_api.push_message('U82a41664b4a103c31ae2be046358f484', TextSendMessage(text='程式運行中\n在股票名稱或代碼前加上「股票 」即可查詢\n(ex.股票 台積電)'))
+line_bot_api.push_message('U82a41664b4a103c31ae2be046358f484', TextSendMessage(text='程式運行中\n在股票名稱或代碼前加上「股票 」即可查詢\n(ex.股票 台積電 or 股票 2330)'))
 
 data = {"台積電":"2330"}
 
@@ -53,7 +53,7 @@ def handle_message(event):
     elif '#' in message:
         line_bot_api.reply_message(event.reply_token, TextSendMessage(str(data)))
     else:
-        line_bot_api.reply_message(event.reply_token, TextSendMessage("錯誤指令\n(ex.股票 台積電)"))
+        line_bot_api.reply_message(event.reply_token, TextSendMessage("錯誤指令\n(ex.股票 台積電 or 股票 2330)"))
 
 def price(inp):
     try:
