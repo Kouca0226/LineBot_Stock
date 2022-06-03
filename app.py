@@ -18,6 +18,8 @@ line_bot_api = LineBotApi('rBdXfRQqtY6avy9CJ3Ttenas9mkSoBGquP/qISdSUDfaDIndkKWlD
 handler = WebhookHandler('f40eb4fe030cdece35f592631b9e184a')
 line_bot_api.push_message('U82a41664b4a103c31ae2be046358f484', TextSendMessage(text='程式運行中\n在股票名稱或代碼前加上「股票 」即可查詢\n(ex.股票 台積電)'))
 
+data = {"台積電":"2330"}
+
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -48,6 +50,8 @@ def handle_message(event):
         line_bot_api.reply_message(event.reply_token, flex_message)
     elif '及時股價 ' in message:
         line_bot_api.reply_message(event.reply_token, TextSendMessage(price(message[5:])))
+    elif '#' in message:
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(data))
     else:
         line_bot_api.reply_message(event.reply_token, TextSendMessage("錯誤指令\n(ex.股票 台積電)"))
 
@@ -97,7 +101,6 @@ def get_stock(stockn):
     return (out)
 
 def get_stockid(name):
-    data = {"台積電":"2330"}
     url = 'https://isin.twse.com.tw/isin/single_main.jsp?owncode=&stockname=' + name
     r = requests.get(url)
     if(name in data):
