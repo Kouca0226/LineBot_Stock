@@ -43,18 +43,13 @@ def handle_message(event):
     if "股票 " in message:
         flex_message = TextSendMessage(text="請選擇相關資訊",
                                 quick_reply=QuickReply(items=[
-                                QuickReplyButton(action=MessageAction(label="及時股價", text="及時股價 " + message[3:])),
-                                QuickReplyButton(action=MessageAction(label="歷年法人", text="歷年法人買賣超 " + message[5:])),
-                                QuickReplyButton(action=MessageAction(label="外資", text="外資買賣超 " + message[5:])),
-                                QuickReplyButton(action=MessageAction(label="投信", text="投信買賣超 " + message[5:])),
-                                QuickReplyButton(action=MessageAction(label="自營商", text="自營商買賣超 " + message[5:])),
-                                QuickReplyButton(action=MessageAction(label="三大法人", text="三大法人買賣超 " + message[5:]))
-                            ]))
+                                QuickReplyButton(action=MessageAction(label="及時股價", text="及時股價 " + message[3:]))
+                                ]))
         line_bot_api.reply_message(event.reply_token, flex_message)
     elif '及時股價 ' in message:
         line_bot_api.reply_message(event.reply_token, TextSendMessage(price(message[5:])))
     else:
-        line_bot_api.reply_message(event.reply_token, TextSendMessage("錯誤指令"))
+        line_bot_api.reply_message(event.reply_token, TextSendMessage("錯誤指令\n(ex.股票 台積電)"))
 
 def price(inp):
     try:
