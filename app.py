@@ -71,19 +71,27 @@ def get_stock(stockn):
     title2 = sp.find('span', class_='C($c-icon) Fz(24px) Mend(20px)').text
     title = ("%s(%s)" %(title1, title2))
 
-    data = sp.find('div', class_='D(f) Ai(fe) Mb(4px)')
-    if (str(data)[100] == 'u'):
-        trend = 'up'
-    else:
-        trend = 'down'
-    price1 = sp.find('span', class_='Fz(32px) Fw(b) Lh(1) Mend(16px) D(f) Ai(c) C($c-trend-'+ trend +')').text
-    price = ('即時股價：'+price1)
-    percent = sp.find('span', class_='Jc(fe) Fz(20px) Lh(1.2) Fw(b) D(f) Ai(c) C($c-trend-'+ trend +')').text
-    dprice = sp.find('span', class_='Fz(20px) Fw(b) Lh(1.2) Mend(4px) D(f) Ai(c) C($c-trend-'+ trend +')').text
-    if (trend == 'up'):
-        t = ("走勢：上漲%s %s" %(dprice ,percent))
-    else:
-        t = ("走勢：下跌%s %s" %(dprice ,percent))
+    try:
+        data = sp.find('div', class_='D(f) Ai(fe) Mb(4px)')
+        if (str(data)[100] == 'u'):
+            trend = 'up'
+        else:
+            trend = 'down'
+        price1 = sp.find('span', class_='Fz(32px) Fw(b) Lh(1) Mend(16px) D(f) Ai(c) C($c-trend-'+ trend +')').text
+        price = ('即時股價：'+price1)
+        percent = sp.find('span', class_='Jc(fe) Fz(20px) Lh(1.2) Fw(b) D(f) Ai(c) C($c-trend-'+ trend +')').text
+        dprice = sp.find('span', class_='Fz(20px) Fw(b) Lh(1.2) Mend(4px) D(f) Ai(c) C($c-trend-'+ trend +')').text
+        if (trend == 'up'):
+            t = ("走勢：上漲%s %s" %(dprice ,percent))
+        else:
+            t = ("走勢：下跌%s %s" %(dprice ,percent))
+    except:
+        price = sp.find('span', class_='Fz(32px) Fw(b) Lh(1) Mend(16px) D(f) Ai(c)').text
+        price = ('即時股價：'+price)
+
+        percent = sp.find('span', class_='Jc(fe) Fz(20px) Lh(1.2) Fw(b) D(f) Ai(c)').text
+        dprice = sp.find('span', class_='Fz(20px) Fw(b) Lh(1.2) Mend(4px) D(f) Ai(c)').text
+        t = ("走勢：平盤%s %s" %(dprice ,percent))
     
     out = ("%s\n%s\n%s" %(title, price, t))
     return (out)
