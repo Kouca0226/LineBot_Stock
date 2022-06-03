@@ -51,7 +51,7 @@ def handle_message(event):
     elif '及時股價 ' in message:
         line_bot_api.reply_message(event.reply_token, TextSendMessage(price(message[5:])))
     elif '#' in message:
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(data))
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(str(data)))
     else:
         line_bot_api.reply_message(event.reply_token, TextSendMessage("錯誤指令\n(ex.股票 台積電)"))
 
