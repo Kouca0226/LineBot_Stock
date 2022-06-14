@@ -11,6 +11,7 @@ from linebot.models import *
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
+import twstock
 
 app = Flask(__name__)
 
@@ -45,10 +46,10 @@ def handle_message(event):
     if "股票 " in message:
         flex_message = TextSendMessage(text="請選擇相關資訊",
                                 quick_reply=QuickReply(items=[
-                                QuickReplyButton(action=MessageAction(label="及時股價", text="及時股價 " + message[3:]))
+                                QuickReplyButton(action=MessageAction(label="即時股價", text="即時股價 " + message[3:]))
                                 ]))
         line_bot_api.reply_message(event.reply_token, flex_message)
-    elif '及時股價 ' in message:
+    elif '即時股價 ' in message:
         line_bot_api.reply_message(event.reply_token, TextSendMessage(price(message[5:])))
     elif '#' in message:
         line_bot_api.reply_message(event.reply_token, TextSendMessage(str(data)))
@@ -65,40 +66,21 @@ def price(inp):
         return "查無此股票"
     return out
 
-def get_stock(stockn):
-    url = "https://tw.stock.yahoo.com/quote/" + stockn
-    r = requests.get(url)
-    sp = BeautifulSoup(r.text, 'lxml')
-
-    # 找到區塊
-    title1 = sp.find('h1', class_='C($c-link-text) Fw(b) Fz(24px) Mend(8px)').text
-    title2 = sp.find('span', class_='C($c-icon) Fz(24px) Mend(20px)').text
-    title = ("%s(%s)" %(title1, title2))
-
-    try:
-        data = sp.find('div', class_='D(f) Ai(fe) Mb(4px)')
-        if (str(data)[100] == 'u'):
-            trend = 'up'
-        else:
-            trend = 'down'
-        price1 = sp.find('span', class_='Fz(32px) Fw(b) Lh(1) Mend(16px) D(f) Ai(c) C($c-trend-'+ trend +')').text
-        price = ('即時股價：'+price1)
-        percent = sp.find('span', class_='Jc(fe) Fz(20px) Lh(1.2) Fw(b) D(f) Ai(c) C($c-trend-'+ trend +')').text
-        dprice = sp.find('span', class_='Fz(20px) Fw(b) Lh(1.2) Mend(4px) D(f) Ai(c) C($c-trend-'+ trend +')').text
-        if (trend == 'up'):
-            t = ("走勢：上漲%s %s" %(dprice ,percent))
-        else:
-            t = ("走勢：下跌%s %s" %(dprice ,percent))
-    except:
-        price = sp.find('span', class_='Fz(32px) Fw(b) Lh(1) Mend(16px) D(f) Ai(c)').text
-        price = ('即時股價：'+price)
-
-        percent = sp.find('span', class_='Jc(fe) Fz(20px) Lh(1.2) Fw(b) D(f) Ai(c)').text
-        dprice = sp.find('span', class_='Fz(20px) Fw(b) Lh(1.2) Mend(4px) D(f) Ai(c)').text
-        t = ("走勢：平盤%s %s" %(dprice ,percent))
-    
-    out = ("%s\n%s\n%s" %(title, price, t))
-    return (out)
+def get_stock(id):
+    stock = twstock.realtime.get(id)
+    stock1 = twstock.Stock(id)
+    rate = round((float(stock['realtime']['latest_trade_price'])/float(stock1.price[-2])-1)*100, 2)
+    if (rate<0):
+      f = "下跌"
+      rate = -rate
+    elif (rate>0):
+      f = "上漲"
+    else:
+      f = "平盤"
+    if (stock['success']):
+        return "股票名稱：" + stock['info']['name'] + "\n股票代碼：" + stock['info']['code'] + "\n公司全名：" + stock['info']['fullname'] + "\n股價查詢時間：" + stock['info']['time'] + "(GMT+0)" + "\n即時股價：" + stock['realtime']['latest_trade_price'] + str(" (%s%.2f"%(f, rate)) + "%)" + "\n開盤價：" + stock['realtime']['open'] + "\n最高價：" + stock['realtime']['high'] + "\n最低價：" + stock['realtime']['low'] + "\n總成交量：" + stock['realtime']['accumulate_trade_volume']
+    else:
+        return "查無此股票"
 
 def get_stockid(name):
     url = 'https://isin.twse.com.tw/isin/single_main.jsp?owncode=&stockname=' + name

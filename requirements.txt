@@ -16,3 +16,4 @@ arrow
 beautifulsoup4
 requests
 pandas
+twstock
