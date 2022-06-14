@@ -47,13 +47,16 @@ def handle_message(event):
         flex_message = TextSendMessage(text="請選擇相關資訊",
                                 quick_reply=QuickReply(items=[
                                 QuickReplyButton(action=MessageAction(label="即時股價", text="即時股價 " + message[3:])),
-                                QuickReplyButton(action=MessageAction(label="相關新聞", text="相關新聞 " + message[3:]))
+                                QuickReplyButton(action=MessageAction(label="相關新聞", text="相關新聞 " + message[3:])),
+                                QuickReplyButton(action=MessageAction(label="個股公告", text="個股公告 " + message[3:]))
                                 ]))
         line_bot_api.reply_message(event.reply_token, flex_message)
     elif '即時股價 ' in message:
         line_bot_api.reply_message(event.reply_token, TextSendMessage(price(message[5:])))
     elif '相關新聞 ' in message:
         line_bot_api.reply_message(event.reply_token, TextSendMessage(news(message[5:])))
+    elif '個股公告 ' in message:
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(announcement(message[5:])))
     elif '#' in message:
         line_bot_api.reply_message(event.reply_token, TextSendMessage(str(data)))
     else:
@@ -74,6 +77,16 @@ def news(inp):
             out = get_news(get_stockid(inp))
         except:
             out = get_news(inp)
+    except:
+        return "查無此股票"
+    return out
+
+def announcement(inp):
+    try:
+        try:
+            out = get_announcement(get_stockid(inp))
+        except:
+            out = get_announcement(inp)
     except:
         return "查無此股票"
     return out
@@ -110,9 +123,9 @@ def get_stockid(name):
                 n += 1
     except:
         return "查無此股票"
-def get_news():
+def get_news(id):
     content = ""
-    url = "https://tw.stock.yahoo.com/quote/2330/news"
+    url = "https://tw.stock.yahoo.com/quote/"+ id +"/news"
     r = requests.get(url)
     sp = BeautifulSoup(r.text, 'lxml')
     data = sp.find_all("a", {"class": "Fw(b) Fz(20px) Fz(16px)--mobile Lh(23px) Lh(1.38)--mobile C($c-primary-text)! C($c-active-text)!:h LineClamp(2,46px)!--mobile LineClamp(2,46px)!--sm1024 mega-item-header-link Td(n) C(#0078ff):h C(#000) LineClamp(2,46px) LineClamp(2,38px)--sm1024 not-isInStreamVideoEnabled"})
@@ -122,6 +135,20 @@ def get_news():
         content += "{}\n{}\n".format(title, href)
     
     return content
+
+def get_announcement(id):
+    content = ""
+    url = "https://tw.stock.yahoo.com/quote/"+ id +"/announcement"
+    r = requests.get(url)
+    sp = BeautifulSoup(r.text, 'lxml')
+    data = sp.find_all("a", {"class": "Fw(b) Fz(20px) Fz(16px)--mobile Lh(23px) Lh(1.38)--mobile C($c-primary-text)! C($c-active-text)!:h LineClamp(2,46px)!--mobile LineClamp(2,46px)!--sm1024 mega-item-header-link Td(n) C(#0078ff):h C(#000) LineClamp(2,46px) LineClamp(2,38px)--sm1024 not-isInStreamVideoEnabled"})
+    for d in data:
+        title = d.text
+        href = d.get("href")
+        content += "{}\n{}\n".format(title, href)
+    
+    return content
+
 #主程式
 import os 
 if __name__ == "__main__":
