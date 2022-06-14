@@ -53,6 +53,13 @@ def handle_message(event):
         line_bot_api.reply_message(event.reply_token, flex_message)
     elif '即時股價 ' in message:
         line_bot_api.reply_message(event.reply_token, TextSendMessage(price(message[5:])))
+        flex_message = TextSendMessage(text="請選擇相關資訊",
+                                quick_reply=QuickReply(items=[
+                                QuickReplyButton(action=MessageAction(label="即時股價", text="即時股價 " + message[3:])),
+                                QuickReplyButton(action=MessageAction(label="相關新聞", text="相關新聞 " + message[3:])),
+                                QuickReplyButton(action=MessageAction(label="個股公告", text="個股公告 " + message[3:]))
+                                ]))
+        line_bot_api.reply_message(event.reply_token, flex_message)
     elif '相關新聞 ' in message:
         line_bot_api.reply_message(event.reply_token, TextSendMessage(news(message[5:])))
     elif '個股公告 ' in message:
