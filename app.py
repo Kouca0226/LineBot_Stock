@@ -52,7 +52,7 @@ def handle_message(event):
                                 ]))
         line_bot_api.reply_message(event.reply_token, flex_message)
     elif '基本資料 ' in message:
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(price(message[5:] + flex_message)))
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(price(message[5:])))
     elif '相關新聞 ' in message:
         line_bot_api.reply_message(event.reply_token, TextSendMessage(news(message[5:])))
     elif '個股公告 ' in message:
