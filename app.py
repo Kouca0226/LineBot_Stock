@@ -135,7 +135,7 @@ def get_news(id):
     url = "https://tw.stock.yahoo.com/quote/"+ id +"/news"
     r = requests.get(url)
     sp = BeautifulSoup(r.text, 'lxml')
-    data = sp.find_all("a", {"class": "Fw(b) Fz(20px) Fz(16px)--mobile Lh(23px) Lh(1.38)--mobile C($c-primary-text)! C($c-active-text)!:h LineClamp(2,46px)!--mobile LineClamp(2,46px)!--sm1024 mega-item-header-link Td(n) C(#0078ff):h C(#000) LineClamp(2,46px) LineClamp(2,38px)--sm1024 not-isInStreamVideoEnabled"})
+    data = sp.find_all("a", {"class": "Fw(b) Fz(20px) Fz(16px)--mobile Lh(23px) Lh(1.38)--mobile C($c-primary-text)! C($c-active-text)!:h LineClamp(2,46px)!--mobile LineClamp(2,46px)!--sm1024 mega-item-header-link Td(n) C(#0078ff):h C(#000) LineClamp(2,46px) LineClamp(2,38px)--sm1024 not-isInStreamVideoEnabled"}, limit= 5)
     for d in data:
         title = d.text
         href = d.get("href")
@@ -148,7 +148,7 @@ def get_announcement(id):
     url = "https://tw.stock.yahoo.com/quote/"+ id +"/announcement"
     r = requests.get(url)
     sp = BeautifulSoup(r.text, 'lxml')
-    data = sp.find_all("a", {"class": "Fw(b) Fz(20px) Fz(16px)--mobile Lh(23px) Lh(1.38)--mobile C($c-primary-text)! C($c-active-text)!:h LineClamp(2,46px)!--mobile LineClamp(2,46px)!--sm1024 mega-item-header-link Td(n) C(#0078ff):h C(#000) LineClamp(2,46px) LineClamp(2,38px)--sm1024 not-isInStreamVideoEnabled"})
+    data = sp.find_all("a", {"class": "Fw(b) Fz(20px) Fz(16px)--mobile Lh(23px) Lh(1.38)--mobile C($c-primary-text)! C($c-active-text)!:h LineClamp(2,46px)!--mobile LineClamp(2,46px)!--sm1024 mega-item-header-link Td(n) C(#0078ff):h C(#000) LineClamp(2,46px) LineClamp(2,38px)--sm1024 not-isInStreamVideoEnabled"}, limit = 5)
     for d in data:
         title = d.text
         href = d.get("href")
