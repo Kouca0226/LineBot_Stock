@@ -78,7 +78,7 @@ def get_stock(id):
     else:
       f = "平盤"
     if (stock['success']):
-        return "股票名稱：" + stock['info']['name'] + "\n股票代碼：" + stock['info']['code'] + "\n公司全名：" + stock['info']['fullname'] + "\n即時股價：" + stock['realtime']['latest_trade_price'] + str(" (%s%.2f"%(f, rate)) + "%)" + "\n開盤價：" + stock['realtime']['open'] + "\n最高價：" + stock['realtime']['high'] + "\n最低價：" + stock['realtime']['low'] + "\n總成交量：" + stock['realtime']['accumulate_trade_volume']
+        return "股票名稱：" + stock['info']['name'] + "\n股票代碼：" + stock['info']['code'] + "\n公司全名：" + stock['info']['fullname'] + "\n即時股價：" + stock['realtime']['latest_trade_price'] + str("\n走勢：%s%.2f"%(f, rate)) + "\n開盤價：" + stock['realtime']['open'] + "\n最高價：" + stock['realtime']['high'] + "\n最低價：" + stock['realtime']['low'] + "\n總成交量：" + stock['realtime']['accumulate_trade_volume']
     else:
         return "查無此股票"
 
